@@ -8,7 +8,7 @@ export interface DOMCallCounter {
   removeChild: number;
 }
 
-function createCallCounter(): DOMCallCounter {
+export function createCallCounter(): DOMCallCounter {
   return {
     createElement: 0,
     createElementNS: 0,
@@ -20,7 +20,7 @@ function createCallCounter(): DOMCallCounter {
   };
 }
 
-export default function observe(fn: () => void): DOMCallCounter {
+export function observe(fn: () => void): DOMCallCounter {
   // Save original functions
   const createElement = Document.prototype.createElement;
   const createElementNS = Document.prototype.createElementNS;
@@ -75,3 +75,5 @@ export default function observe(fn: () => void): DOMCallCounter {
 
   return counter;
 }
+
+export default observe;
