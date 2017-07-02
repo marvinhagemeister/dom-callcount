@@ -1,5 +1,5 @@
 {
-  "name": "typescript-starter",
+  "name": "dom-callcount",
   "version": "0.0.1",
   "description": "typescript boilerplate project",
   "main": "dist/index.js",
@@ -10,7 +10,7 @@
     "lint": "tslint 'src/**/*.ts' 'src/**/*.tsx'",
     "watch": "tsc -w",
     "build": "npm run cleanup && tsc",
-    "test": "mocha --compilers ts:ts-node/register 'src/**/__tests__/*.spec.ts'",
+    "test": "mocha --compilers ts:ts-node/register  --require src/__tests__/setup.ts 'src/**/__tests__/*.spec.ts'",
     "test-watch": "npm t -- -w -R min",
     "coverage": "nyc npm t",
     "prepublish": "npm run lint && npm t && npm run build",
@@ -19,9 +19,11 @@
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "^4.0.1",
+    "@types/jsdom": "^11.0.1",
     "@types/mocha": "^2.2.41",
     "chai": "^4.0.2",
     "husky": "^0.14.2",
+    "jsdom": "^11.0.0",
     "lint-staged": "^4.0.0",
     "mocha": "^3.3.0",
     "nyc": "^11.0.3",
