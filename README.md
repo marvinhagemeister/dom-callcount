@@ -1,6 +1,10 @@
 # DOM CallCount
 
-// TODO
+`dom-callcount` is a tiny library to track calls to the `DOM`. The main use
+case is for developers of virtual-dom libraries which want to minimize dom
+operations as much as possible.
+
+This library is heavily inspired by these [utils](https://github.com/ivijs/ivi/blob/bef9db3205e168c00a4e2242ae2c7166b2b7be88/packages/ivi/tests/utils/dom.ts) from [ivi](https://github.com/ivijs/ivi).
 
 ## Installation
 

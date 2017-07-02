@@ -1,7 +1,7 @@
 {
   "name": "dom-callcount",
-  "version": "0.0.1",
-  "description": "typescript boilerplate project",
+  "version": "1.0.0",
+  "description": "Track callcount of dom apis. Useful for vdom-testing.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "repository": {
