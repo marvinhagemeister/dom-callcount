@@ -1,6 +1,20 @@
 import { assert as t } from "chai";
 import observe from "../";
 
+const none = {
+  createElement: 0,
+  createElementNS: 0,
+  createTextNode: 0,
+  appendChild: 0,
+  insertBefore: 0,
+  replaceChild: 0,
+  removeChild: 0,
+  setAttribute: 0,
+  setAttributeNS: 0,
+  removeAttribute: 0,
+  removeAttributeNS: 0,
+};
+
 describe("observe", () => {
   it("should observe dom changes", () => {
     const res = observe(() => {
@@ -10,13 +24,10 @@ describe("observe", () => {
     });
 
     t.deepEqual(res, {
+      ...none,
       createElement: 1,
-      createElementNS: 0,
       createTextNode: 1,
       appendChild: 1,
-      insertBefore: 0,
-      replaceChild: 0,
-      removeChild: 0,
     });
 
     const res2 = observe(() => {
@@ -32,7 +43,7 @@ describe("observe", () => {
     });
 
     t.deepEqual(res2, {
-      createElement: 0,
+      ...none,
       createElementNS: 1,
       createTextNode: 2,
       appendChild: 2,
@@ -54,13 +65,25 @@ describe("observe", () => {
     div.appendChild(text);
 
     t.deepEqual(res, {
+      ...none,
       createElement: 1,
-      createElementNS: 0,
       createTextNode: 1,
       appendChild: 1,
-      insertBefore: 0,
-      replaceChild: 0,
-      removeChild: 0,
+    });
+  });
+
+  it("should track attribute changes", () => {
+    const res = observe(() => {
+      const div = document.createElement("div");
+      div.setAttribute("class", "foo");
+      div.removeAttribute("class");
+    });
+
+    t.deepEqual(res, {
+      ...none,
+      createElement: 1,
+      setAttribute: 1,
+      removeAttribute: 1,
     });
   });
 });

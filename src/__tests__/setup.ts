@@ -9,3 +9,4 @@ const dom = new JSDOM();
 Document.prototype = (dom.window.document as any).__proto__;
 
 (global as any).Node = (dom.window as any)._core.Node;
+(global as any).Element = (dom.window as any)._core.Element;

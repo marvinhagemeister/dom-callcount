@@ -6,6 +6,11 @@ export interface DOMCallCounter {
   insertBefore: number;
   replaceChild: number;
   removeChild: number;
+  // Attributes
+  setAttribute: number;
+  setAttributeNS: number;
+  removeAttribute: number;
+  removeAttributeNS: number;
 }
 
 export function createCallCounter(): DOMCallCounter {
@@ -17,6 +22,10 @@ export function createCallCounter(): DOMCallCounter {
     insertBefore: 0,
     replaceChild: 0,
     removeChild: 0,
+    removeAttribute: 0,
+    removeAttributeNS: 0,
+    setAttribute: 0,
+    setAttributeNS: 0,
   };
 }
 
@@ -29,6 +38,10 @@ export function observe(fn: () => void): DOMCallCounter {
   const insertBefore = Node.prototype.insertBefore;
   const replaceChild = Node.prototype.replaceChild;
   const removeChild = Node.prototype.removeChild;
+  const setAttribute = Element.prototype.setAttribute;
+  const setAttributeNS = Element.prototype.setAttributeNS;
+  const removeAttribute = Element.prototype.removeAttribute;
+  const removeAttributeNS = Element.prototype.removeAttributeNS;
 
   const counter = createCallCounter();
 
@@ -61,6 +74,22 @@ export function observe(fn: () => void): DOMCallCounter {
     counter.removeChild++;
     return removeChild.apply(this, arguments);
   };
+  Element.prototype.setAttribute = function(this: Element) {
+    counter.setAttribute++;
+    return setAttribute.apply(this, arguments);
+  };
+  Element.prototype.setAttributeNS = function(this: Element) {
+    counter.setAttributeNS++;
+    return setAttributeNS.apply(this, arguments);
+  };
+  Element.prototype.removeAttribute = function(this: Element) {
+    counter.removeAttribute++;
+    return removeAttribute.apply(this, arguments);
+  };
+  Element.prototype.removeAttributeNS = function(this: Element) {
+    counter.removeAttributeNS++;
+    return removeAttributeNS.apply(this, arguments);
+  };
 
   fn();
 
@@ -72,6 +101,10 @@ export function observe(fn: () => void): DOMCallCounter {
   Node.prototype.insertBefore = insertBefore;
   Node.prototype.replaceChild = replaceChild;
   Node.prototype.removeChild = removeChild;
+  Element.prototype.setAttribute = setAttribute;
+  Element.prototype.setAttributeNS = setAttributeNS;
+  Element.prototype.removeAttribute = removeAttribute;
+  Element.prototype.removeAttributeNS = removeAttributeNS;
 
   return counter;
 }
