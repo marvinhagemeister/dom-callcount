@@ -28,7 +28,7 @@
     "@types/mocha": "^2.2.41",
     "chai": "^4.0.2",
     "husky": "^0.14.2",
-    "jsdom": "^11.0.0",
+    "jsdom": "^11.1.0",
     "lint-staged": "^4.0.0",
     "mocha": "^3.3.0",
     "nyc": "^11.0.3",
@@ -47,7 +47,10 @@
     ]
   },
   "nyc": {
-    "include": ["src/*.ts", "src/**/*.ts"],
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
     "exclude": [
       "typings",
       "node_modules/",
@@ -55,9 +58,19 @@
       "__tests__/**",
       "**/*.d.ts"
     ],
-    "extension": [".ts"],
-    "require": ["ts-node/register"],
-    "reporter": ["json", "html", "text", "text-summary", "lcovonly"],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html",
+      "text",
+      "text-summary",
+      "lcovonly"
+    ],
     "all": true
   }
 }
