@@ -60,9 +60,10 @@ global.document = window.document;
 global.Document = document;
 Document.prototype = document.__proto__;
 
-// Same for `Node`. Note that we are using a private api here!
+// Same for `Node` and `Element`. Note that we are using a private api here!
 // There is unfortunately not another way to do this.
 global.Node = window._core.Node;
+global.Element = dom.window._core.Element;
 ```
 
 ## License

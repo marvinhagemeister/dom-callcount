@@ -1,4 +1,3 @@
-/* tslint:disable:no-var-requires */
 import { JSDOM } from "jsdom";
 
 const dom = new JSDOM();
