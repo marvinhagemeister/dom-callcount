@@ -18,6 +18,8 @@ const allowed = [
   "className",
   "id",
   "innerHTML",
+  "addEventListener",
+  "removeEventListener",
 ];
 
 function patch(

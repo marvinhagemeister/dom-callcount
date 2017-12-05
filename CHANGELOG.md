@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+* Forgot to track `addEventListener` and `removeEventListener`
+
 ## 2.0.0
 
 * _Breaking:_ Less noisy output, only displays which functions have been called.

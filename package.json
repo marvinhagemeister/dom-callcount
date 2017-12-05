@@ -1,6 +1,6 @@
 {
   "name": "dom-callcount",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Track callcount of dom apis. Useful for vdom-testing.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
