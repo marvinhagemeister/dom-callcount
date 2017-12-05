@@ -4,6 +4,8 @@
 case is for developers of virtual-dom libraries which want to minimize dom
 operations as much as possible.
 
+If you're testing in a real browser you should use a [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) instead. This library is mainly for environments where `MutationObserver` is not available, because the latter is quite hard to polyfill.
+
 This library is heavily inspired by these [utils](https://github.com/ivijs/ivi/blob/bef9db3205e168c00a4e2242ae2c7166b2b7be88/packages/ivi/tests/utils/dom.ts) from [ivi](https://github.com/ivijs/ivi).
 
 ## Installation
@@ -35,35 +37,9 @@ console.log(result);
 // Logs:
 // {
 //   createElement: 1,
-//   createElementNS: 0,
 //   createTextNode: 1,
 //   appendChild: 1,
-//   insertBefore: 0,
-//   replaceChild: 0,
-//   removeChild: 0,
 // }
-```
-
-### Usage with [jsdom](https://github.com/tmpvar/jsdom)
-
-Using `dom-callcount` with [jsdom](https://github.com/tmpvar/jsdom) requires
-a little setup beforehand.
-
-```js
-import { JSDOM } from "jsdom";
-
-const dom = new JSDOM();
-global.window = dom.window;
-global.document = window.document;
-
-// Shim global Document which is available in browsers
-global.Document = document;
-Document.prototype = document.__proto__;
-
-// Same for `Node` and `Element`. Note that we are using a private api here!
-// There is unfortunately not another way to do this.
-global.Node = window._core.Node;
-global.Element = dom.window._core.Element;
 ```
 
 ## License
