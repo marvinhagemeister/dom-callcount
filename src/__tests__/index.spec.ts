@@ -1,4 +1,3 @@
-import { assert as t } from "chai";
 import observe from "../";
 
 const none = {
@@ -23,7 +22,7 @@ describe("observe", () => {
       div.appendChild(text);
     });
 
-    t.deepEqual(res, {
+    expect(res).toEqual({
       ...none,
       createElement: 1,
       createTextNode: 1,
@@ -42,7 +41,7 @@ describe("observe", () => {
       foo.insertBefore(text, text2);
     });
 
-    t.deepEqual(res2, {
+    expect(res2).toEqual({
       ...none,
       createElementNS: 1,
       createTextNode: 2,
@@ -64,7 +63,7 @@ describe("observe", () => {
     const text = document.createTextNode("foo");
     div.appendChild(text);
 
-    t.deepEqual(res, {
+    expect(res).toEqual({
       ...none,
       createElement: 1,
       createTextNode: 1,
@@ -79,7 +78,7 @@ describe("observe", () => {
       div.removeAttribute("class");
     });
 
-    t.deepEqual(res, {
+    expect(res).toEqual({
       ...none,
       createElement: 1,
       setAttribute: 1,

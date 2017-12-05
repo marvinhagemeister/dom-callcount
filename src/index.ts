@@ -29,82 +29,45 @@ export function createCallCounter(): DOMCallCounter {
   };
 }
 
-export function observe(fn: () => void): DOMCallCounter {
-  // Save original functions
-  const createElement = Document.prototype.createElement;
-  const createElementNS = Document.prototype.createElementNS;
-  const createTextNode = Document.prototype.createTextNode;
-  const appendChild = Node.prototype.appendChild;
-  const insertBefore = Node.prototype.insertBefore;
-  const replaceChild = Node.prototype.replaceChild;
-  const removeChild = Node.prototype.removeChild;
-  const setAttribute = Element.prototype.setAttribute;
-  const setAttributeNS = Element.prototype.setAttributeNS;
-  const removeAttribute = Element.prototype.removeAttribute;
-  const removeAttributeNS = Element.prototype.removeAttributeNS;
+function patch(obj: any, key: string, counter: DOMCallCounter, restore: any[]) {
+  const source = (obj.prototype as any)[key];
+  (obj.prototype as any)[key] = function(this: any) {
+    (counter as any)[key]++;
+    return source.apply(this, arguments);
+  };
 
+  restore.push(() => ((obj.prototype as any)[key] = source));
+}
+
+export type Attr = keyof Document | keyof Node | keyof Element;
+
+export function observe(fn: () => void): DOMCallCounter {
+  const doc: Attr[] = ["createElement", "createElementNS", "createTextNode"];
+  const el: Attr[] = [
+    "appendChild",
+    "insertBefore",
+    "replaceChild",
+    "removeChild",
+    "setAttribute",
+    "setAttributeNS",
+    "removeAttribute",
+    "removeAttributeNS",
+  ];
+
+  const restore: any[] = [];
   const counter = createCallCounter();
 
-  // Patch
-  Document.prototype.createElement = function(this: Document) {
-    counter.createElement++;
-    return createElement.apply(this, arguments);
-  };
-  Document.prototype.createElementNS = function(this: Document) {
-    counter.createElementNS++;
-    return createElementNS.apply(this, arguments);
-  };
-  Document.prototype.createTextNode = function(this: Document) {
-    counter.createTextNode++;
-    return createTextNode.apply(this, arguments);
-  };
-  Node.prototype.appendChild = function(this: Node) {
-    counter.appendChild++;
-    return appendChild.apply(this, arguments);
-  };
-  Node.prototype.insertBefore = function(this: Node) {
-    counter.insertBefore++;
-    return insertBefore.apply(this, arguments);
-  };
-  Node.prototype.replaceChild = function(this: Node) {
-    counter.replaceChild++;
-    return replaceChild.apply(this, arguments);
-  };
-  Node.prototype.removeChild = function(this: Node) {
-    counter.removeChild++;
-    return removeChild.apply(this, arguments);
-  };
-  Element.prototype.setAttribute = function(this: Element) {
-    counter.setAttribute++;
-    return setAttribute.apply(this, arguments);
-  };
-  Element.prototype.setAttributeNS = function(this: Element) {
-    counter.setAttributeNS++;
-    return setAttributeNS.apply(this, arguments);
-  };
-  Element.prototype.removeAttribute = function(this: Element) {
-    counter.removeAttribute++;
-    return removeAttribute.apply(this, arguments);
-  };
-  Element.prototype.removeAttributeNS = function(this: Element) {
-    counter.removeAttributeNS++;
-    return removeAttributeNS.apply(this, arguments);
-  };
+  for (const key of doc) {
+    patch(Document, key, counter, restore);
+  }
+
+  for (const key of el) {
+    patch(Element, key, counter, restore);
+  }
 
   fn();
 
-  // Restore
-  Document.prototype.createElement = createElement;
-  Document.prototype.createElementNS = createElementNS;
-  Document.prototype.createTextNode = createTextNode;
-  Node.prototype.appendChild = appendChild;
-  Node.prototype.insertBefore = insertBefore;
-  Node.prototype.replaceChild = replaceChild;
-  Node.prototype.removeChild = removeChild;
-  Element.prototype.setAttribute = setAttribute;
-  Element.prototype.setAttributeNS = setAttributeNS;
-  Element.prototype.removeAttribute = removeAttribute;
-  Element.prototype.removeAttributeNS = removeAttributeNS;
+  restore.forEach(x => x());
 
   return counter;
 }
